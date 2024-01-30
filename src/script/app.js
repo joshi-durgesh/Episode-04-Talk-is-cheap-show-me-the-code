@@ -85,15 +85,32 @@ const BannerSection = () => {
   );
 };
 
-const RestaurantCard = () => {
+const RestaurantCard = (props) => {
+  const { resData } = props;
+  const { cloudinaryImageId, name, avgRating, cuisines, sla, areaName } =
+    resData?.info;
+
   return (
-    <a href='#'>
-      <img
-        src={
-          "https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_288,h_360/" +
-          TopBrandsData[0].info.cloudinaryImageId
-        }
-      />
+    <a className='resto-card' href=''>
+      <div className='resto-img-container'>
+        <img
+          className='resto-card-img'
+          src={
+            "https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_288,h_360/" +
+            cloudinaryImageId
+          }
+        />
+      </div>
+      <div className='resto-detail-container'>
+        <h3 className='resto-name overflow-text'>{name}</h3>
+        <div>
+          <span className='bi bi-star-fill'></span>&nbsp;
+          {avgRating} <span className='bi bi-dot'></span>
+          &nbsp; {sla.slaString}
+        </div>
+        <div className='overflow-text'>{cuisines.join(",")}</div>
+        <div>{areaName}</div>
+      </div>
     </a>
   );
 };
@@ -108,8 +125,10 @@ const TopBrandsSection = () => {
           <BannerBtn side='right' />
         </div>
       </div>
-      <div>
-        <RestaurantCard />
+      <div className='top-brand-container'>
+        {TopBrandsData.map((brandData) => (
+          <RestaurantCard key={brandData.info.id} resData={brandData} />
+        ))}
       </div>
     </section>
   );
@@ -135,5 +154,4 @@ const mainContent = () => {
 
 //creating root to rendering element
 const root = ReactDOM.createRoot(document.getElementById("container"));
-
 root.render(mainContent());
